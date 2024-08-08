@@ -200,7 +200,7 @@
 </head>
 <body>
     <div class="main-container">
-        <img src="image/regBg.jpg" alt="">
+        <img src="image/regbg.jpg" alt="">
     <div class="container">
        <h2>WELCOME TO <span style="color:darkslategrey;">GlamBUE</span></h2> 
     <div class="selection">
