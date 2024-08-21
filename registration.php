@@ -215,7 +215,7 @@
     </div>
 
        <div class="holderform" id="holderform">
-            <form action="registrationValidation.php" method="post" onsubmit="return validateForm()">
+            <form action="holderregistration.php" method="post" onsubmit="return validateForm()">
                 <div class="input-layer">
                     <input type="text" id="parlourname" name="parlourname" placeholder=" ">
                     <label for="parlourname">Parlour Name</label>
@@ -237,6 +237,15 @@
                     <input type="text" id="city" name="city" placeholder=" ">
                     <label for="city">City</label>
                 </div>
+                <div class="input-layer">
+                     <input type="password" id="password" name="password" placeholder=" ">
+                     <label for="password">Password</label>
+                 </div>
+                 
+                 <div class="input-layer">
+                     <input type="password" id="cpassword" name="cpassword" placeholder=" ">
+                     <label for="cpassword">Confirm password</label>
+                 </div>
                     <div class="input-layer">
                     <input type="submit" value="Submit">
                 </div>
@@ -244,7 +253,7 @@
         </div>
 
         <div class="userform" id="userform" style="display: none;">
-             <form action="registrationValidation.php" method="post" onsubmit="return validateForm()">
+             <form action="userregistration.php" method="post" onsubmit="return validateForm()">
                  <div class="input-layer">
                     <div class="fname">
                         <input type="text" id="userfname" name="userfname" placeholder=" ">
@@ -335,15 +344,15 @@
         }
         const toggleCheckbox = document.getElementById('checkbox-toggle');
         const userContainer = document.getElementById('userform');
-        const registrationContainer = document.getElementById('companyform');
+        const holderContainer = document.getElementById('holderform');
 
         toggleCheckbox.addEventListener('change', function() {
             if (this.checked) {
                 userContainer.style.display = 'block';
-                registrationContainer.style.display = 'none';
+                holderContainer.style.display = 'none';
             } else {
                 userContainer.style.display = 'none';
-                registrationContainer.style.display = 'block';
+                holderContainer.style.display = 'block';
             }
         });
 

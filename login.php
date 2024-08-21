@@ -7,33 +7,33 @@
     <link rel="stylesheet" href="styles.css">
     
     <style>
-        body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-image: url('image/bg1.jpeg');
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: cover;
-        }
+   body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    background-image: url(image/login1.PNG);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
 
-        .login-container {
-            padding: 30px;
-            border-radius: 10px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 300px;
-            width: 300px;
-            text-align: center;
-            text-align: center;
-            background-color: rgba(0, 0, 0, 0.453);
-            background-color: rgba(0, 0, 0, 0.453);
-        }
+.login-container {
+    position:absolute;
+    left:20%;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 3px 10px inset;
+    background-color: rgba(255, 255, 255, 0.10);
+    width: 300px;
+    text-align: center;
+    border: 1px solid #Aa6c39;
+    backdrop-filter: blur(10px);
+}
+
 
         .login-container h2 {
             margin-bottom: 20px;
@@ -87,7 +87,7 @@
             color: white;
         }
 
-        button {
+        input[type=submit] {
             width: 100%;
             padding: 10px;
             background-color: #ff6f61;
@@ -99,7 +99,7 @@
             transition: background-color 0.3s ease;
         }
 
-        button:hover {
+        input[type=submit]:hover {
             background-color: #6a9194;
         }
 
@@ -107,17 +107,51 @@
             color: red;
             font-size: 12px;
             margin-top: 5px;
+            
         }
+        .registering{
+            color:white;
+            text-decoration:none;
+        }
+        .errordiv{
+        height: 40px;
+        align-items:center;
+        display:flex;
+        position: relative;
+    }
+    .errordiv p{
+        color:red;
+        position: absolute;
+        top:20px
+    }
+    .errordiv .pos{
+        color:green;
+        position: absolute;
+        top:20px
+    }
     </style>
 </head>
 <body>
     <div class="login-container">
         <h2>LOGIN</h2>
-        <form id="loginForm" action="/login" method="post">
+        <div class="errordiv">
+                    <?php
+                        if(isset($_GET['error'])){
+                            $error_message=htmlspecialchars($_GET['error']);
+                            echo "<p>{$error_message}</p>";
+                            unset($_GET['error']);
+                       } 
+                       if(isset($_GET['message'])){
+                            echo "<p class='pos'>{$_GET['message']}</p>";
+                            unset($_GET['message']);
+                        } 
+                    ?>
+                </div>
+        <form id="loginForm" action="loginValidation.php" method="post" onsubmit="return loginvalidation()">
             <div class="input-group">
-                <input type="text" id="username" name="username" required maxlength="15">
-                <label for="username">Username</label>
-                <div id="usernameError" class="error-message"></div>
+                <input type="text" id="email" name="email" required maxlength="15">
+                <label for="email">Username</label>
+                <div id="email" class="error-message"></div>
             </div>
             <div class="input-group">
                 <input type="password" id="password" name="password" required maxlength="8">
@@ -127,98 +161,42 @@
             <div class="input-group forgot">
                 <a class="forgotlink" href="#">Forgot password?</a>
             </div>
-            <button type="submit">Login</button>
-            <a href="registration.html"><span style="color: white">Create a new account</span></a>
+            <input type="submit" value="LOGIN">
+            <a class="registering" href="registration.php">Create a new account</a>
         </form>
     </div>
 
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent form submission
-            let isValid = true;
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+         function loginValidation() {
+            // Clear previous error messages
+            document.getElementById("usernameError").innerText = "";
+            document.getElementById("passwordError").innerText = "";
 
-            const usernameError = document.getElementById('usernameError');
-            const passwordError = document.getElementById('passwordError');
+            // Get values from the input fields
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            let valid = true;
 
-            usernameError.textContent = '';
-            passwordError.textContent = '';
-
-            // Username validation
-            if (username.length < 5 || username.length > 15) {
-                usernameError.textContent = 'Username must be between 5 and 15 characters long.';
-                isValid = false;
+            // Basic validation for username
+            if (username.length < 3) {
+                document.getElementById("usernameError").innerText = "Username must be at least 3 characters long.";
+                valid = false;
             }
 
-            if (!/^[a-zA-Z0-9]+$/.test(username)) {
-                usernameError.textContent = 'Username can only contain letters and numbers.';
-                isValid = false;
+            // Basic validation for password
+            if (password.length < 6) {
+                document.getElementById("passwordError").innerText = "Password must be at least 6 characters long.";
+                valid = false;
+            }
+            const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#]).{6,}$/;
+            if (!passwordPattern.test(password)) {
+                document.getElementById("passwordError").innerText = "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.";
+                valid = false;
             }
 
-            // Password validation
-            if (password.length !== 8) {
-                passwordError.textContent = 'Password must be exactly 8 characters long.';
-                isValid = false;
-            }
-
-            if (!/[A-Z]/.test(password)) {
-                passwordError.textContent = 'Password must contain at least one uppercase letter.';
-                isValid = false;
-            }
-
-            if (!/[a-z]/.test(password)) {
-                passwordError.textContent = 'Password must contain at least one lowercase letter.';
-                isValid = false;
-            }
-
-            if (!/[0-9]/.test(password)) {
-                passwordError.textContent = 'Password must contain at least one number.';
-                isValid = false;
-            }
-
-            if (!/[!@#\$%\^&\*]/.test(password)) {
-                passwordError.textContent = 'Password must contain at least one special character.';
-                isValid = false;
-            }
-
-            if (!isValid) {
-                return; // Stop the function if validation fails
-            }
-
-            // Check if user exists
-            fetch('/checkUserExists', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username: username })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.exists) {
-                    alert('User already exists. Please log in.');
-                } else {
-                    document.getElementById('loginForm').submit();
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        });
-
-        // Prevent further input once the character limit is reached
-        document.getElementById('username').addEventListener('input', function() {
-            if (this.value.length > 15) {
-                this.value = this.value.slice(0, 15);
-            }
-        });
-
-        document.getElementById('password').addEventListener('input', function() {
-            if (this.value.length > 8) {
-                this.value = this.value.slice(0, 8);
-            }
-        });
+            // Return the validation result
+            return valid;
+        }
     </script>
     </body>
 </html>
