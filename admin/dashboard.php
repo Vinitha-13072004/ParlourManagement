@@ -1,13 +1,10 @@
 <?php
 include "connection.php";
 session_start();
-// Check if the user is logged in
-// if (!isset($_SESSION['admin_id'])) {
-//     // Redirect to login page if not logged in
-//     header("Location: ../login.php");
-//     exit(); // Stop further script execution
-// }
-
+if (!isset($_SESSION['admin_id'])) {
+    header("Location:../login.php");
+    exit(); 
+}
 // Fetch counts for users and holders
 $users_count = $conn->query("SELECT 
     SUM(permission='allow') AS approved, 

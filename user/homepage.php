@@ -3,10 +3,10 @@ include 'connection.php';
 session_start();
 
 // Check if user is logged in
-// if (!isset($_SESSION['user_id'])) {
-//     header("Location: login.php"); // Redirect to login if not logged in
-//     exit();
-// }
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../login.php"); // Redirect to login if not logged in
+    exit();
+}
 
 $selected_location = '';
 $shops = [];
@@ -31,16 +31,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['location'])) {
 $suggested_locations = ['Pambanar', 'Kuttikanam', 'Mundakayam'];
 
 // Handle appointment submission
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['appointment'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['shop_id'])) {
     $shop_id = $_POST['shop_id'];
     $date = $_POST['date'];
     $time = $_POST['time'];
 
     // Insert appointment into the database
-    $stmt = $conn->prepare("INSERT INTO appointments (shop_id, user_id, date, time) VALUES (?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO appointments (shop_id, user_id, `appointment_date`, `appointment_time`) VALUES (?, ?, ?, ?)");
     $stmt->bind_param("iiss", $shop_id, $_SESSION['user_id'], $date, $time);
-    $stmt->execute();
-    // Optionally: Provide feedback to the user (e.g., "Appointment scheduled successfully.")
+    
+    if ($stmt->execute()) {
+        echo "<script>alert('Appointment scheduled successfully.');</script>";
+    } else {
+        echo "<script>alert('Error scheduling appointment.');</script>";
+    }
 }
 ?>
 
@@ -50,28 +54,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['appointment'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Home</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
-        /* CSS styles remain largely unchanged, with additions for shop display */
+        /* Add your CSS styles here */
         * {
             padding: 0;
             margin: 0;
             font-family: 'Arial', sans-serif;
             box-sizing: border-box;
         }
-
         body {
             color: #fff;
             background-color: #000;
+            margin: 0;
         }
-
         .main-container {
             display: flex;
             flex-direction: column;
             width: 100%;
             height: 100vh;
         }
-
         .header {
             display: flex;
             height: 60px;
@@ -82,96 +84,91 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['appointment'])) {
             background-color: #ff3e8c; /* Pink */
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
         }
-
         .logo {
             font-size: 2rem;
             font-weight: bold;
             color: white;
             text-decoration: none;
         }
-
         .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 250px;
-            height: 100vh;
-            padding: 20px;
-            background-color: #111; /* Darker background */
-            border-right: 2px solid #ff3e8c; /* Pink Border */
-            transform: translateX(-100%); /* Initially hidden */
-            transition: transform 0.3s ease;
-            z-index: 10;
-        }
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100vh;
+    padding: 20px;
+    background-color: #111; /* Darker background */
+    border-right: 2px solid #ff3e8c; /* Pink Border */
+    transform: translateX(-100%); /* Initially hidden */
+    transition: transform 0.3s ease;
+    z-index: 10;
+}
 
-        .sidebar.visible {
-            transform: translateX(0); /* Show when visible */
-        }
+.sidebar.visible {
+    transform: translateX(0); /* Show when visible */
+}
 
-        .sidebar .close {
-            display: flex;
-            justify-content: flex-end;
-        }
+.sidebar .close {
+    display: flex;
+    justify-content: flex-end;
+}
 
-        .sidebar .close i {
-            font-size: 2em;
-            cursor: pointer;
-            color: #ff3e8c; /* Pink */
-        }
+.sidebar .close i {
+    font-size: 2em;
+    cursor: pointer;
+    color: #ff3e8c; /* Pink */
+}
 
-        .sidebar .bar {
-            padding: 15px 20px; /* Increased padding */
-            margin-top: 15px; /* Adjusted margin */
-            background-color: #222; /* Dark background for bars */
-            border-radius: 10px; /* Rounded corners */
-            color: white;
-            text-align: center; /* Center text */
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
+.sidebar .bar {
+    padding: 15px 20px;
+    margin-top: 15px;
+    background-color: #222;
+    border-radius: 10px;
+    color: white;
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
 
-        .sidebar .bar:hover {
-            background-color: #ff3e8c; /* Pink */
-            color: black;
-            transform: scale(1.05);
-        }
+.sidebar .bar:hover {
+    background-color: #ff3e8c;
+    color: black;
+    transform: scale(1.05);
+}
 
-        .sidebar .bar.current {
-            background-color: #ff3e8c; /* Highlight current bar */
-            color: black; /* Change text color for current bar */
-        }
+.sidebar .bar.current {
+    background-color: #ff3e8c;
+    color: black;
+}
 
-        .sidebar .bar a {
-            display: block; /* Make the link fill the entire bar */
-            color: white; /* Default text color */
-            text-decoration: none; /* Remove underline */
-            font-weight: bold; /* Make the text bold */
-            transition: color 0.3s ease; /* Smooth color transition */
-        }
+.sidebar .bar a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
 
-        .sidebar .bar a:hover {
-            color: black; /* Text color on hover */
-        }
-
+.sidebar .bar a:hover {
+    color: black;
+}
         .container {
             padding: 20px;
             width: 95%;
-            height: calc(100vh - 60px); /* Ensure it fills remaining space */
+            height: calc(100vh - 60px); /* Fill remaining space */
             margin: 20px auto;
         }
-
         .search-container {
             margin-bottom: 20px;
-            position: relative; /* For positioning the suggestions */
+            position: relative;
         }
-
-        input[type="text"] {
+        input[type="text"], input[type="date"], input[type="time"] {
             padding: 10px;
             font-size: 1rem;
             border-radius: 5px;
             border: 1px solid #ccc;
-            width: 200px; /* Fixed width for the search box */
+            width: 100%; /* Use full width for better responsiveness */
+            max-width: 400px;
         }
-
         input[type="submit"] {
             padding: 10px 20px;
             background-color: #ff3e8c; /* Pink */
@@ -181,42 +178,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['appointment'])) {
             cursor: pointer;
             font-size: 1rem;
             transition: background-color 0.3s ease;
-            margin-left: 10px; /* Space between input and button */
+            margin-left: 10px;
         }
-
         input[type="submit"]:hover {
             background-color: #ff2e6c; /* Darker Pink */
         }
-
-        .suggestions {
-            position: absolute;
-            background-color: white;
-            color: black;
-            border: 1px solid #ccc;
-            z-index: 100;
-            width: calc(200px + 20px); /* Adjust width to match input */
-            max-height: 150px;
-            overflow-y: auto; /* Scrollable if many suggestions */
-            border-radius: 5px;
-            margin-top: 5px;
-        }
-
-        .suggestion-item {
-            padding: 10px;
-            cursor: pointer;
-        }
-
-        .suggestion-item:hover {
-            background-color: #ff3e8c; /* Highlight on hover */
-            color: white; /* Change text color on hover */
-        }
-
         .shop-container {
             margin-top: 20px;
             display: flex;
             flex-direction: column;
         }
-
         .shop-card {
             background-color: #222;
             border-radius: 10px;
@@ -224,18 +195,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['appointment'])) {
             margin-bottom: 15px;
             color: white;
         }
-
         .shop-card h3 {
             margin: 0;
             font-size: 1.5rem;
         }
-
-        .shop-card p {
-            margin: 5px 0;
-        }
-
         .appointment-btn {
-            background-color: #ff3e8c; /* Pink */
+            background-color: #ff3e8c;
             color: white;
             border: none;
             border-radius: 5px;
@@ -243,15 +208,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['appointment'])) {
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
-
         .appointment-btn:hover {
-            background-color: #ff2e6c; /* Darker Pink */
+            background-color: #ff2e6c;
+        }
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        .modal-content {
+            background-color: #222;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            border-radius: 10px;
+            color: white;
+        }
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .menu-btn {
+            background-color: #ff3e8c;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            transition: background-color 0.3s, transform 0.3s;
         }
 
-        .no-shops {
-            color: #ff3e8c; /* Pink */
-            font-weight: bold;
-            margin-top: 20px;
+        .menu-btn:hover {
+            background-color: #ff2e6c;
+            transform: scale(1.1);
         }
     </style>
 </head>
@@ -294,13 +299,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['appointment'])) {
                             <p>Holder Name: <?php echo htmlspecialchars($shop['account_email']); ?></p>
                             <p>Phone Number: <?php echo htmlspecialchars($shop['phonenumber']); ?></p>
                             <p>City: <?php echo htmlspecialchars($shop['city']); ?></p>
-                            <button class="appointment-btn" onclick="scheduleAppointment(<?php echo htmlspecialchars($shop['account_id']); ?>)">Make Appointment</button>
+                            <button class="appointment-btn" onclick="openAppointmentModal(<?php echo htmlspecialchars($shop['account_id']); ?>)">Make Appointment</button>
                         </div>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <div class="no-shops">No shops available in this location.</div>
                 <?php endif; ?>
             </div>
+        </div>
+    </div>
+
+    <!-- Appointment Modal -->
+    <div class="modal" id="appointmentModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAppointmentModal()">&times;</span>
+            <h2>Schedule Appointment</h2>
+            <form id="appointmentForm" method="POST">
+                <input type="hidden" name="shop_id" id="shop_id" value="">
+                <label for="date">Select Date:</label>
+                <input type="date" name="date" id="date" required>
+                <label for="time">Select Time:</label>
+                <input type="time" name="time" id="time" required>
+                <input type="submit" value="Schedule">
+            </form>
         </div>
     </div>
 
@@ -340,31 +361,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['appointment'])) {
             document.getElementById('suggestions').style.display = 'none';
         }
 
-        function scheduleAppointment(shopId) {
-            const date = prompt("Enter appointment date (YYYY-MM-DD):");
-            const time = prompt("Enter appointment time (HH:MM):");
+        function openAppointmentModal(shopId) {
+            document.getElementById('shop_id').value = shopId;
+            document.getElementById('appointmentModal').style.display = 'block';
+        }
 
-            if (date && time) {
-                const form = new FormData();
-                form.append('appointment', true);
-                form.append('shop_id', shopId);
-                form.append('date', date);
-                form.append('time', time);
-
-                fetch('user_home.php', {
-                    method: 'POST',
-                    body: form
-                })
-                .then(response => response.text())
-                .then(data => {
-                    alert("Appointment scheduled successfully.");
-                    // Optionally, refresh the page or update the UI
-                })
-                .catch(error => {
-                    console.error("Error scheduling appointment:", error);
-                    alert("Failed to schedule appointment.");
-                });
-            }
+        function closeAppointmentModal() {
+            document.getElementById('appointmentModal').style.display = 'none';
         }
     </script>
 </body>

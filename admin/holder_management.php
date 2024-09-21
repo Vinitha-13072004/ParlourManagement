@@ -2,10 +2,10 @@
 include 'connection.php';
 session_start();
 // Check if the user is logged in
-// if (!isset($_SESSION['admin_id'])) {
-//     header("Location: ../login.php");
-//     exit();
-// }
+if (!isset($_SESSION['admin_id'])) {
+    header("Location: ../login.php");
+    exit();
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['permission'])) {
     $account_id = $_POST['account_id'];
