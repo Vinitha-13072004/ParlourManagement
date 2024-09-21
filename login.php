@@ -169,17 +169,6 @@ input[type=submit]:hover {
                     <input type="password" id="loginpassword" name="loginpassword" required minlength="6">
                     <label for="loginpassword">Password</label>
                 </div>
-            
-                <div class="input-group">
-                <select id="city" name="city" required>
-                <option value="" disabled selected>City</option>
-                <option value="pambanr">Pambanar</option>
-                <option value="periyar">Periyar</option>
-                <option value="kuttikanam">Kuttikanam</option>
-                <option value="mundakayam">Mundakayam</option>
-            </select>
-        
-        </div>
                 <div class="input-group forgot">
                     <a class="forgotlink" href="#">Forgot password?</a>
                 </div>

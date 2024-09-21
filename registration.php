@@ -197,61 +197,62 @@
 <body>
     <div class="main-container">
         <img src="image/regbg.jpg" alt="">
-    <div class="container">
-       <h2>WELCOME TO <span style="color:darkslategrey;">GlamBUE</span></h2> 
-    <div class="selection">
-        <input type="checkbox" id="checkbox-toggle" class="check">
-        <div class="checkbox">
-            <label for="checkbox-toggle" class="slide">
-                <label for="checkbox-toggle" class="toggle"></label>
-                <label for="checkbox-toggle" class="text">HOLDER</label>
-                <label for="checkbox-toggle" class="text">USER</label>
-            </label>
-        </div>
-    </div>
+        <div class="container">
+            <h2>WELCOME TO <span style="color:darkslategrey;">GlamBUE</span></h2> 
+            <div class="selection">
+                <input type="checkbox" id="checkbox-toggle" class="check">
+                <div class="checkbox">
+                    <label for="checkbox-toggle" class="slide">
+                        <label for="checkbox-toggle" class="toggle"></label>
+                        <label for="checkbox-toggle" class="text">HOLDER</label>
+                        <label for="checkbox-toggle" class="text">USER</label>
+                    </label>
+                </div>
+            </div>
 
-       <div class="holderform" id="holderform">
-            <form action="holderregistration.php" method="post" onsubmit="return holderValidation()">
-                <div class="input-layer">
-                    <input type="text" id="parlorname" name="parlorname" placeholder=" ">
-                    <label for="parlorname">Parlour Name</label>
-                </div>
-            
-                <div class="input-layer">
-                    <input type="text" id="holdername" name="holdername" placeholder=" ">
-                    <label for="holdername">Holder Name</label>
-                </div>
-                <div class="input-layer">
-                    <input type="text" id="holderemail" name="holderemail" placeholder=" ">
-                    <label for="holderemail">Email</label>
-                </div>
-                <div class="input-layer">
-                    <input type="text" id="holderphonenum" name="holderphonenum" placeholder=" ">
-                    <label for="holderphonenum">Phone Number</label>
-                </div>
-               
-                <div class="input-group">
-                    <select id="city" name="city" required>
-                    <option value="" disabled selected>City</option>
-                    <option value="pambanr">Pambanr</option>
-                    <option value="periyar">Periyar</option>
-                    <option value="kuttikanam">Kuttikanam</option>
-                    <option value="mundakayam">Mundakayam</option>
-                </div>
-                </select>
-                <div class="input-layer">
-                     <input type="password" id="holderpassword" name="holderpassword" placeholder=" ">
-                     <label for="password">Password</label>
-                 </div>
-                 <div class="input-layer">
-                     <input type="password" id="holderconfirmpassword" name="holderconfirmpassword" placeholder=" ">
-                     <label for="confirmpassword">Confirm Password</label>
-                 </div>
-                <div class="input-layer">
-                    <input type="submit" value="Register Now">
-                </div>
-            </form>
-       </div>
+            <div class="holderform" id="holderform">
+                <form action="holderregistration.php" method="post" onsubmit="return holderValidation()">
+                    <div class="input-layer">
+                        <input type="text" id="parlorname" name="parlorname" placeholder=" ">
+                        <label for="parlorname">Parlour Name</label>
+                    </div>
+
+                    <div class="input-layer">
+                        <input type="text" id="holdername" name="holdername" placeholder=" ">
+                        <label for="holdername">Holder Name</label>
+                    </div>
+                    <div class="input-layer">
+                        <input type="text" id="holderemail" name="holderemail" placeholder=" ">
+                        <label for="holderemail">Email</label>
+                    </div>
+                    <div class="input-layer">
+                        <input type="text" id="holderphonenum" name="holderphonenum" placeholder=" ">
+                        <label for="holderphonenum">Phone Number</label>
+                    </div>
+
+                    <div class="input-group">
+                        <select id="city" name="city" required>
+                        <option value="" disabled selected>City</option>
+                        <option value="pambanr">Pambanar</option>
+                        <option value="periyar">Periyar</option>
+                        <option value="kuttikanam">Kuttikanam</option>
+                        <option value="mundakayam">Mundakayam</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-layer">
+                         <input type="password" id="holderpassword" name="holderpassword" placeholder=" ">
+                         <label for="password">Password</label>
+                     </div>
+                     <div class="input-layer">
+                         <input type="password" id="holderconfirmpassword" name="holderconfirmpassword" placeholder=" ">
+                         <label for="confirmpassword">Confirm Password</label>
+                     </div>
+                    <div class="input-layer">
+                        <input type="submit" value="Register Now">
+                    </div>
+                </form>
+            </div>
 
        <div class="userform" id="userform" style="display: none;">
         <form action="useregistration.php" method="post" onsubmit="return userValidation()">
