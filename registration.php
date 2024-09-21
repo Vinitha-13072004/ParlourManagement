@@ -3,7 +3,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <title>Company Signup</title>
+    <title>Registration</title>
     <style>
     * {
         padding: 0;
@@ -17,7 +17,7 @@
         align-items: center;
         min-height: 100vh;
         color: #000000;
-        background-color: darkslategrey;
+        background-color:white;
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
@@ -54,7 +54,6 @@
         padding-block: 20px;
         margin: 0;
         overflow: auto;
-        
     }
     .container::-webkit-scrollbar{
         display: none;
@@ -73,7 +72,7 @@
         width: 100%;
         border: none;
         outline: none;
-        border-bottom: 1px solid #c0c0c0;;
+        border-bottom: 1px solid #c0c0c0;
         font-size: 16px;
         padding: 5px 0;
         background: none;
@@ -102,16 +101,15 @@
     
     .input-layer input[type=submit] {
         position: absolute;
-        color: maroon(242, 245, 255);
+        color: rgb(242, 245, 255);
         width: 100%;
         height: 40px;
-        border: 1px  maroon(47, 95, 255);
-        background-color:  black;
+        border: 1px solid maroon;
+        background-color: black;
         font-weight: 600;
         border-radius: 5px;
     }
     .input-layer input[type=submit]:hover {
-
         color: white;
         border-color: #3a0606f6;
     }
@@ -162,7 +160,6 @@
         box-shadow: 2px 4px 4px inset;
         overflow: hidden;
         border-radius: 20px;
-
     }
     #checkbox-toggle{
         display: none;
@@ -191,7 +188,6 @@
         font-weight: 700;
         z-index: 100;
         cursor: pointer;
-
     }
     .check:checked + .checkbox .slide .toggle{
         transform: translateX(170px) skewX(-30deg);
@@ -215,149 +211,142 @@
     </div>
 
        <div class="holderform" id="holderform">
-            <form action="holderregistration.php" method="post" onsubmit="return validateForm()">
+            <form action="holderregistration.php" method="post" onsubmit="return holderValidation()">
                 <div class="input-layer">
-                    <input type="text" id="parlourname" name="parlourname" placeholder=" ">
-                    <label for="parlourname">Parlour Name</label>
+                    <input type="text" id="parlorname" name="parlorname" placeholder=" ">
+                    <label for="parlorname">Parlour Name</label>
                 </div>
             
                 <div class="input-layer">
-                    <input type="text" id="holdername" name="holderform" placeholder=" ">
+                    <input type="text" id="holdername" name="holdername" placeholder=" ">
                     <label for="holdername">Holder Name</label>
                 </div>
                 <div class="input-layer">
-                    <input type="email" id="email" name="email" placeholder=" ">
-                    <label for="email">Email</label>
+                    <input type="text" id="holderemail" name="holderemail" placeholder=" ">
+                    <label for="holderemail">Email</label>
                 </div>
                 <div class="input-layer">
-                    <input type="text" id="phonenum" name="phonenum" placeholder=" ">
-                    <label for="phonenum">Phone Number</label>
+                    <input type="text" id="holderphonenum" name="holderphonenum" placeholder=" ">
+                    <label for="holderphonenum">Phone Number</label>
                 </div>
-                <div class="input-layer">
-                    <input type="text" id="city" name="city" placeholder=" ">
-                    <label for="city">City</label>
+               
+                <div class="input-group">
+                    <select id="city" name="city" required>
+                    <option value="" disabled selected>City</option>
+                    <option value="pambanr">Pambanr</option>
+                    <option value="periyar">Periyar</option>
+                    <option value="kuttikanam">Kuttikanam</option>
+                    <option value="mundakayam">Mundakayam</option>
                 </div>
+                </select>
                 <div class="input-layer">
-                     <input type="password" id="password" name="password" placeholder=" ">
+                     <input type="password" id="holderpassword" name="holderpassword" placeholder=" ">
                      <label for="password">Password</label>
                  </div>
-                 
                  <div class="input-layer">
-                     <input type="password" id="cpassword" name="cpassword" placeholder=" ">
-                     <label for="cpassword">Confirm password</label>
+                     <input type="password" id="holderconfirmpassword" name="holderconfirmpassword" placeholder=" ">
+                     <label for="confirmpassword">Confirm Password</label>
                  </div>
-                    <div class="input-layer">
-                    <input type="submit" value="Submit">
+                <div class="input-layer">
+                    <input type="submit" value="Register Now">
                 </div>
             </form>
-        </div>
+       </div>
 
-        <div class="userform" id="userform" style="display: none;">
-             <form action="userregistration.php" method="post" onsubmit="return validateForm()">
-                 <div class="input-layer">
-                    <div class="fname">
-                        <input type="text" id="userfname" name="userfname" placeholder=" ">
-                        <label for="userfname">First name</label>
-                    </div>
-                    <div class="sname">
-                        <input type="text" id="usersname" name="usersname" placeholder=" ">
-                        <label for="usersname">Last Name</label>
-                    </div>
-                 </div>
-                 
-                <div class="input-layer">
-                    <input type="text" id="usercity" name="usercity" placeholder=" ">
-                    <label for="usercity">City</label>
-                </div>
-                <div class="input-layer">
-                    <input type="text" id="phonenum" name="phonenum" placeholder=" ">
-                    <label for="phonenum">Phone Number</label>
-                </div>
-                <div class="input-layer">
-                    <input type="email" id="email" name="email" placeholder=" ">
-                    <label for="email">Email</label>
-                </div>
-                 <div class="input-layer">
-                     <input type="password" id="password" name="password" placeholder=" ">
-                     <label for="password">Password</label>
-                 </div>
-                 
-                 <div class="input-layer">
-                     <input type="password" id="cpassword" name="cpassword" placeholder=" ">
-                     <label for="cpassword">Confirm password</label>
-                 </div>
-                 <div class="input-layer">
-                     <input type="submit" value="Submit">
-                 </div>
-             </form>
-         </div>
+       <div class="userform" id="userform" style="display: none;">
+        <form action="useregistration.php" method="post" onsubmit="return userValidation()">
+            <div class="input-layer">
+                <input type="text" id="username" name="username" placeholder=" ">
+                <label for="username">Name</label>
+            </div>
+            <div class="input-layer">
+                <input type="text" id="useremail" name="useremail" placeholder=" ">
+                <label for="useremail">Email</label>
+            </div>
+            <div class="input-layer">
+                <input type="text" id="userphonenum" name="userphonenum" placeholder=" ">
+                <label for="userphonenum">Phone Number</label>
+            </div>
+            <div class="input-group">
+                <select id="city" name="city" required>
+                <option value="" disabled selected>City</option>
+                <option value="pambanar">Pambanar</option>
+                <option value="periyar">Periyar</option>
+                <option value="kuttikanam">Kuttikanam</option>
+                <option value="mundakayam">Mundakayam</option>
+            </select>
+            <div class="input-layer">
+                 <input type="password" id="userpassword" name="userpassword" placeholder=" ">
+                 <label for="userpassword">Password</label>
+             </div>
+             <div class="input-layer">
+                 <input type="password" id="userconfirmpassword" name="userconfirmpassword" placeholder=" ">
+                 <label for="userconfirmpassword">Confirm Password</label>
+             </div>
+            <div class="input-layer">
+                <input type="submit" value="Register Now">
+            </div>
+        </form>
+       </div>
     </div>
     </div>
-    
-
     <script>
-        function validateForm() {
-            // Get form elements
-            var companyName = document.getElementById("companyname").value;
-            var regId = document.getElementById("regid").value;
-            var contactPerson = document.getElementById("contactperson").value;
-            var email = document.getElementById("email").value;
-            var phoneNum = document.getElementById("phonenum").value;
-
-            // Regular expressions for validation
-            var regIdPattern = /^[A-Za-z0-9]{6,}$/;
-            var phoneNumPattern = /^[0-9]{10}$/;
-
-            // Validate Company Name
-            if (companyName === "") {
-                alert("Company Name is required.");
-                return false;
-            }
-
-            // Validate Registration ID
-            if (!regIdPattern.test(regId)) {
-                alert("Registration ID should be alphanumeric and at least 6 characters long.");
-                return false;
-            }
-
-            // Validate Contact Person
-            if (contactPerson === "") {
-                alert("Contact Person is required.");
-                return false;
-            }
-
-            // Validate Email
-            var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailPattern.test(email)) {
-                alert("Please enter a valid email address.");
-                return false;
-            }
-
-            // Validate Phone Number
-            if (!phoneNumPattern.test(phoneNum)) {
-                alert("Phone number should be 10 digits long.");
-                return false;
-            }
-
-            // If all validations pass
-            return true;
-        }
-        const toggleCheckbox = document.getElementById('checkbox-toggle');
-        const userContainer = document.getElementById('userform');
-        const holderContainer = document.getElementById('holderform');
-
-        toggleCheckbox.addEventListener('change', function() {
-            if (this.checked) {
-                userContainer.style.display = 'block';
-                holderContainer.style.display = 'none';
+        document.querySelector('#checkbox-toggle').addEventListener('click', function() {
+            var checkbox = document.querySelector('.check');
+            var userForm = document.getElementById('userform');
+            var holderForm = document.getElementById('holderform');
+            
+            if (checkbox.checked) {
+                userForm.style.display = 'block';
+                holderForm.style.display = 'none';
             } else {
-                userContainer.style.display = 'none';
-                holderContainer.style.display = 'block';
+                userForm.style.display = 'none';
+                holderForm.style.display = 'block';
             }
         });
+        
+        function holderValidation() {
+            var parlorname = document.getElementById('parlorname').value.trim();
+            var holdername = document.getElementById('holdername').value.trim();
+            var holderemail = document.getElementById('holderemail').value.trim();
+            var holderphonenum = document.getElementById('holderphonenum').value.trim();
+            var holdercity = document.getElementById('holdercity').value.trim();
+            var holderpassword = document.getElementById('holderpassword').value.trim();
+            var holderconfirmpassword = document.getElementById('holderconfirmpassword').value.trim();
 
-        // Initial state
-        registrationContainer.style.display = 'block';
+            if (parlorname === "" || holdername === "" || holderemail === "" || holderphonenum === "" || holdercity === "" || holderpassword === "" || holderconfirmpassword === "") {
+                alert("All fields must be filled out");
+                return false;
+            }
+            
+            if (holderpassword !== holderconfirmpassword) {
+                alert("Passwords do not match");
+                return false;
+            }
+            
+            return true;
+        }
+
+        function userValidation() {
+            var username = document.getElementById('username').value.trim();
+            var email = document.getElementById('useremail').value.trim();
+            var phonenum = document.getElementById('userphonenum').value.trim();
+            var city = document.getElementById('usercity').value.trim();
+            var password = document.getElementById('userpassword').value.trim();
+            var confirmpassword = document.getElementById('userconfirmpassword').value.trim();
+
+            if (username === "" || email === "" || phonenum === "" || city === "" || password === "" || confirmpassword === "") {
+                alert("All fields must be filled out");
+                return false;
+            }
+            
+            if (password !== confirmpassword) {
+                alert("Passwords do not match");
+                return false;
+            }
+            
+            return true;
+        }
     </script>
 </body>
-</html> 
+</html>

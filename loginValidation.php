@@ -3,12 +3,13 @@
 
 
         // Get the user input
-        $input_email = $_POST['login_email'];
-        $input_password = $_POST['login_password'];
+        $input_email = $_POST['loginemail'];
+        $input_password = $_POST['loginpassword'];
 
 
         // Include the database connection file
         include 'connection.php';
+
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }
@@ -26,15 +27,15 @@
 
         if ($stmt->fetch()) {
             // Verify the password
-            if (password_verify($input_password, $stored_password)) {
+            if ($input_password=== $stored_password) {
                 if($stored_type === 'admin'){
-                    header("location:Admin/login.php");
+                    header("location:admin/index.php");
                 }
                 elseif($stored_type === 'holder'){
-                    header("location:holder/login.php");
+                    header("location:holder/holderhomepage.php");
                 }
                 elseif($stored_type === 'user'){
-                    header("location:user/index.php");
+                    header("location:user/userhomepage.php");
                 }
                 else{
                     $error_message = urldecode('User not found');

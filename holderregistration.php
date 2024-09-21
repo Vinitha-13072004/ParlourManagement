@@ -1,16 +1,18 @@
 <?php
-include 'connect.php';
+include 'connection.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $parlourname = $_POST['parlourname'];
+    $parlorname = $_POST['parlorname'];
     $holdername = $_POST['holdername'];
-    $email = $_POST['email'];
-    $phonenum = $_POST['phonenum'];
-    $city = $_POST['city'];
-    $account_password=$_POST['password'];
+    $email = $_POST['holderemail'];
+    $phonenum = $_POST['holderphonenum'];
+    $city = $_POST['holdercity'];
+    $account_password=$_POST['holderpassword'];
+    $account_type="holder";
+    
 
     // Data validation (simple example)
-    if (empty($parlourname) || empty($holdername) || empty($email) || empty($phonenum) || empty($city)) {
+    if (empty($parlorname) || empty($holdername) || empty($email) || empty($phonenum) || empty($city)) {
         echo "All fields are required.";
         exit;
     }
@@ -30,16 +32,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
          
         // Inserting data into Table
 
-        $hashed_password = password_hash($account_password, PASSWORD_BCRYPT);   
-        $stmt = $conn->prepare("INSERT INTO holder_details (Company_name,Contact_person,account_email,PhoneNum) VALUES (?,?,?,?)");
-        $stmt->bind_param("ssss",$companyname,$contactperson,$email,$phonenum);
+        // $hashed_password = password_hash($account_password, PASSWORD_BCRYPT);   
+        $stmt = $conn->prepare("INSERT INTO holder_details (parlorname,holdername,account_email,phonenumber,city) VALUES (?,?,?,?,?)");
+        $stmt->bind_param("sssss",$parlorname,$holdername,$email,$phonenum,$city);
         $inst=$conn->prepare("INSERT INTO account_login (account_email,account_password,account_type) VALUES(?,?,?)");
-        $inst->bind_param("sss",$email,$hashed_password,$account_type);
+        $inst->bind_param("sss",$email,$account_password,$account_type);
         if ( $inst->execute()) {
             header("location:login.php?message=Account created successfully");
             $stmt->execute();
         } else {
             echo "<script>alert('Error: " . $stmt->error . "');</script>";
         }
+    }
 }
+
 ?>
